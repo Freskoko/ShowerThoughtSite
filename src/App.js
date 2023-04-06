@@ -1,22 +1,50 @@
 import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
+
+function CoolButton({changeMainText, changeMainImage}){
+
+  function HandleButtonClick(){
+    console.log("clicked ")
+    fetch("http://localhost:5000/showerthoughtimage")
+
+    .then(response => {
+      console.log("fetching");
+      return response.json();  // Parse the response as JSON
+    })
+    .then(data => {
+      changeMainText(data.thought);
+      changeMainImage(data.image)
+      console.log("should have worked :P");
+    });
+
+  }
+
+  return (
+    <button onClick = {HandleButtonClick} >
+      Click me for new stuff
+    </button>
+
+  )
+}
+
 
 function App() {
+  const [mainText ,  changeMainText]  = useState("Placeholder")
+  const [mainImage,  changeMainImage] = useState("")
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+
+        <CoolButton changeMainText={changeMainText} changeMainImage={changeMainImage} className="CoolButton"/>
+
+        <img src = {mainImage} alt="logo"></img>
+
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          {mainText}
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+
       </header>
     </div>
   );
